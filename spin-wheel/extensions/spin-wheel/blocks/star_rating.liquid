@@ -1,0 +1,72 @@
+{%assign rotateDegree = '180deg' %}
+{% assign color1sector = app.metafields.Settings.color1sectorofwheel %} 
+{% assign color2sector = app.metafields.Settings.color2SectorOfWheel %} 
+{% assign color3sector = app.metafields.Settings.color3SectorOfWheel %} 
+{% assign color4sector = app.metafields.Settings.color4SectorOfWheel %} 
+{% assign color5sector = app.metafields.Settings.color5SectorOfWheel %} 
+{% assign color6sector = app.metafields.Settings.color6SectorOfWheel %} 
+{% assign color7sector = app.metafields.Settings.color7SectorOfWheel %} 
+{% assign color8sector = app.metafields.Settings.color8SectorOfWheel %} 
+
+{% assign text1sector = app.metafields.Settings.text1SectorOfWheel %} 
+{% assign text2sector = app.metafields.Settings.text2SectorOfWheel %} 
+{% assign text3sector = app.metafields.Settings.text3SectorOfWheel %} 
+{% assign text4sector = app.metafields.Settings.text4SectorOfWheel %} 
+{% assign text5sector = app.metafields.Settings.text5SectorOfWheel %} 
+{% assign text6sector = app.metafields.Settings.text6SectorOfWheel %} 
+{% assign text7sector = app.metafields.Settings.text7SectorOfWheel %} 
+{% assign text8sector = app.metafields.Settings.text8SectorOfWheel %} 
+
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+    <img src="https://cdn.shopify.com/s/files/1/0846/8047/4946/files/arrow_down.png?v=1701714348" class="imageArrow">
+    <div class="container" id="container">
+      <div class="one" style="background-color: {{color1sector}};">{{text1sector}}</div>
+      <div class="two" style="background-color: {{color2sector}};">{{text2sector}}</div>
+      <div class="three" style="background-color: {{color3sector}};">{{text3sector}}</div>
+      <div class="four" style="background-color: {{color4sector}};">{{text4sector}}</div>
+      <div class="five" style="background-color: {{color5sector}};">{{text5sector}}</div>
+      <div class="six" style="background-color: {{color6sector}};">{{text6sector}}</div>
+      <div class="seven" style="background-color: {{color7sector}};">{{text7sector}}</div>
+      <div class="eight" style="background-color: {{color8sector}};">{{text8sector}}</div>
+    </div>
+    <form onsubmit="rotateWheel(event)">
+      <p><input type="email" name="" id="emailInput" placeholder="Email"></p>
+      <button type="submit" onclick="">Spin wheel</button>
+    </form>
+  </div>
+</div>
+
+{{  'spinWheel.css' |  asset_url | stylesheet_tag }}
+
+<script>
+  
+  async function rotateWheel(event){
+    event.preventDefault();
+
+    const emailInput = document.getElementById('emailInput').value;
+
+    try {
+      const response = await fetch(`http://localhost:5000/getCoupon?numOfShop=0&numOfSectors=8&mailTarget=${emailInput}`);
+      const data = await response.json();
+
+      const container = document.getElementById('container');
+      console.log(data);
+      container.style.transform = `rotate(${data.rotateDegree*-1}deg)`;
+    } catch (error) {
+      console.error('Ошибка при запросе на сервер:', error);
+    }
+  }
+
+</script>
+
+{% schema %}
+{
+  "name": "Speen wheel",
+  "target": "body",
+  "settings": [
+  ]
+}
+{% endschema %}
+
